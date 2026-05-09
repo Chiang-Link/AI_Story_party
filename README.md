@@ -17,15 +17,7 @@ A web application that generates AI-crafted stories from three keywords. Inspire
 
 ### 1. Open the app
 
-Open `index.html` directly in a browser, or serve it with any static server:
-
-```bash
-# Python
-python -m http.server 8080
-
-# Node.js (npx)
-npx serve .
-```
+Open `index.html` directly in a browser.
 
 ### 2. Configure API Key
 

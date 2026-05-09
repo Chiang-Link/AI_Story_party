@@ -17,15 +17,7 @@
 
 ### 1. 打开应用
 
-直接使用浏览器打开 `index.html`，或用任意静态服务器启动：
-
-```bash
-# Python
-python -m http.server 8080
-
-# Node.js (npx)
-npx serve .
-```
+直接双击 `index.html` 用浏览器打开即可。
 
 ### 2. 配置 API Key
 
