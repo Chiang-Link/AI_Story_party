@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 关键词故事生成器</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- 洒落星光 -->
+<div class="falling-stars" id="fallingStars"></div>
+
+<!-- 顶部导航栏 -->
+<nav class="navbar">
+    <div class="nav-inner">
+        <div class="nav-left">
+            <button class="nav-menu-btn" id="menuBtn">☰</button>
+            <span class="nav-title">故事织机</span>
+        </div>
+        <div class="nav-right">
+            <button class="nav-settings-btn" id="settingsBtn">⚙️ 设置</button>
+        </div>
+    </div>
+</nav>
+
+<!-- 设置弹窗 -->
+<div class="modal-overlay" id="settingsModal">
+    <div class="modal">
+        <div class="modal-header">
+            <span>设置</span>
+            <button class="modal-close" id="settingsCloseBtn">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-section">
+                <label class="modal-label">选择模型</label>
+                <select class="modal-select" id="modelSelect">
+                    <option value="glm">智谱 GLM-4-Flash</option>
+                    <option value="deepseek">DeepSeek V4 Flash</option>
+                </select>
+            </div>
+            <div class="modal-section" id="apiKeySection">
+                <label class="modal-label">API Key（智谱）</label>
+                <div class="api-key-row">
+                    <input type="password" id="apiKeyGlm" placeholder="输入智谱 API Key">
+                    <span class="api-status" id="statusGlm"></span>
+                </div>
+                <button class="btn-save-key" data-target="glm">💾 保存</button>
+            </div>
+            <div class="modal-section" id="apiKeySectionDs" style="display:none">
+                <label class="modal-label">API Key（DeepSeek）</label>
+                <div class="api-key-row">
+                    <input type="password" id="apiKeyDs" placeholder="输入 DeepSeek API Key">
+                    <span class="api-status" id="statusDs"></span>
+                </div>
+                <button class="btn-save-key" data-target="ds">💾 保存</button>
+            </div>
+            <p class="error" id="keyError">请填写 API Key</p>
+        </div>
+    </div>
+</div>
+
+<div class="layout">
+    <!-- 侧边栏遮罩（手机端） -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <!-- 侧边栏 -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>历史记录</h2>
+            <button class="btn-clear-all" id="clearAllBtn" title="清空所有历史">🗑️</button>
+        </div>
+        <div class="sidebar-list" id="historyList"></div>
+        <div class="sidebar-empty" id="historyEmpty">暂无历史故事</div>
+    </aside>
+
+    <!-- 主内容 -->
+    <div class="container">
+        <!-- 装饰性旋涡 -->
+        <svg class="vortex" viewBox="0 0 500 500" preserveAspectRatio="xMidYMid meet">
+            <defs>
+                <radialGradient id="vg-vortex" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="rgba(230,210,80,0.25)" />
+                    <stop offset="25%" stop-color="rgba(200,190,90,0.18)" />
+                    <stop offset="50%" stop-color="rgba(100,170,240,0.12)" />
+                    <stop offset="100%" stop-color="rgba(60,120,200,0)" />
+                </radialGradient>
+            </defs>
+            <circle cx="250" cy="220" r="240" fill="url(#vg-vortex)" />
+            <ellipse cx="280" cy="160" rx="180" ry="80" fill="none" stroke="rgba(230,210,80,0.25)" stroke-width="5" transform="rotate(-18 280 160)" />
+            <ellipse cx="280" cy="160" rx="150" ry="65" fill="none" stroke="rgba(230,210,80,0.18)" stroke-width="4" transform="rotate(-18 280 160)" />
+            <ellipse cx="280" cy="160" rx="120" ry="50" fill="none" stroke="rgba(100,180,245,0.15)" stroke-width="4" transform="rotate(-18 280 160)" />
+            <ellipse cx="280" cy="160" rx="90" ry="35" fill="none" stroke="rgba(230,210,80,0.14)" stroke-width="3" transform="rotate(-18 280 160)" />
+            <ellipse cx="280" cy="160" rx="60" ry="22" fill="none" stroke="rgba(100,180,245,0.12)" stroke-width="3" transform="rotate(-18 280 160)" />
+            <ellipse cx="280" cy="160" rx="35" ry="12" fill="none" stroke="rgba(230,210,80,0.10)" stroke-width="2" transform="rotate(-18 280 160)" />
+        </svg>
+        <h1>故事织机</h1>
+        <p class="subtitle">输入三个关键词，让 AI 为你编织一个故事</p>
+
+        <div class="section">
+            <div class="section-label">
+                <span>关键词</span>
+                <div class="option-group">
+                    <select class="select-opt" id="styleSelect">
+                        <option value="温馨">温馨</option>
+                        <option value="暗黑">暗黑</option>
+                        <option value="搞笑">搞笑</option>
+                    </select>
+                    <select class="select-opt" id="lengthSelect">
+                        <option value="短篇">短篇</option>
+                        <option value="中篇" selected>中篇</option>
+                        <option value="长篇">长篇</option>
+                    </select>
+                    <button class="btn-random" id="randomBtn">🎲 随机</button>
+                </div>
+            </div>
+            <div class="keyword-group">
+                <input type="text" id="kw1" placeholder="关键词 1" maxlength="20">
+                <input type="text" id="kw2" placeholder="关键词 2" maxlength="20">
+                <input type="text" id="kw3" placeholder="关键词 3" maxlength="20">
+            </div>
+            <p class="error" id="kwError">请至少输入一个关键词，或点击「随机」</p>
+        </div>
+
+        <div class="section">
+            <div class="section-label"><span>用户编辑区</span></div>
+            <textarea class="user-edit" id="userEdit" placeholder="在此处修改或续写故事内容…（可留空）"></textarea>
+        </div>
+
+        <button class="btn-generate" id="generateBtn">✨ 生成故事</button>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <span class="loading-text">AI 正在编织故事…</span>
+        </div>
+
+        <div class="output" id="output">
+            <div class="output-header">
+                <div class="keywords-used" id="outputKeywords"></div>
+                <button class="btn-save" id="saveBtn">💾 保存</button>
+            </div>
+            <div class="output-meta">
+                <span class="model-used" id="outputModel"></span>
+            </div>
+            <div id="outputContent"></div>
+        </div>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
