@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>故事织机</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        /* 首页专用样式 */
+        .home-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 56px);
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .home-logo {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .home-logo h1 {
+            font-size: 52px;
+            margin-bottom: 12px;
+            letter-spacing: 8px;
+        }
+
+        .home-logo .tagline {
+            color: rgba(200, 180, 60, 0.35);
+            font-size: 16px;
+            font-style: italic;
+            letter-spacing: 3px;
+        }
+
+        .home-logo .tagline-sub {
+            color: rgba(200, 180, 60, 0.2);
+            font-size: 13px;
+            margin-top: 16px;
+            letter-spacing: 1px;
+        }
+
+        .home-btn-area {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-enter {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            padding: 20px 56px;
+            border: 1px solid rgba(200, 180, 60, 0.3);
+            border-radius: 60px;
+            background: linear-gradient(135deg, rgba(200, 180, 60, 0.12), rgba(200, 180, 60, 0.04));
+            color: #e8d48b;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            cursor: pointer;
+            transition: all 0.4s;
+            font-family: inherit;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-enter::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 62px;
+            background: conic-gradient(from 0deg, transparent, rgba(200, 180, 60, 0.3), transparent, rgba(200, 180, 60, 0.3), transparent);
+            z-index: -1;
+            animation: borderRotate 4s linear infinite;
+            opacity: 0;
+            transition: opacity 0.6s;
+        }
+
+        .btn-enter:hover::before {
+            opacity: 1;
+        }
+
+        .btn-enter::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            border-radius: 58px;
+            background: #0a1628;
+            z-index: -1;
+        }
+
+        @keyframes borderRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .btn-enter:hover {
+            background: linear-gradient(135deg, rgba(200, 180, 60, 0.2), rgba(200, 180, 60, 0.08));
+            box-shadow: 0 12px 40px rgba(200, 180, 60, 0.12);
+            transform: translateY(-2px) scale(1.02);
+            border-color: rgba(200, 180, 60, 0.5);
+        }
+
+        .btn-enter:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .btn-enter .arrow {
+            font-size: 24px;
+            transition: transform 0.3s;
+        }
+
+        .btn-enter:hover .arrow {
+            transform: translateX(4px);
+        }
+
+        .home-bottom {
+            position: absolute;
+            bottom: 100px;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .home-bottom p {
+            color: rgba(200, 180, 60, 0.15);
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        /* ===== 蒲公英 ===== */
+        .dandelions {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70vh;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .dandelion {
+            position: absolute;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .dandelion-stem {
+            width: 3px;
+            background: rgba(200, 180, 60, 0.6);
+            border-radius: 2px;
+            transform-origin: bottom center;
+            flex-shrink: 0;
+        }
+
+        .dandelion-head {
+            width: 60px;
+            height: 60px;
+            background: url('/pictures/rongrong.png') no-repeat center bottom;
+            background-size: contain;
+            flex-shrink: 0;
+            transform-origin: bottom center;
+            filter: brightness(0.9) saturate(0.8);
+            transition: filter 0.5s;
+            margin-bottom: -20px;
+        }
+
+        /* 每株蒲公英的位置和高度 */
+        .dandelion-0 { left: 1%; }
+        .dandelion-0 .dandelion-stem { height: 200px; }
+        .dandelion-0 .dandelion-head { width: 350px; height: 350px; margin-bottom: -140px; }
+
+        .dandelion-1 { left: 18%; }
+        .dandelion-1 .dandelion-stem { height: 280px; }
+        .dandelion-1 .dandelion-head { width: 490px; height: 490px; margin-bottom: -210px; }
+
+        .dandelion-2 { left: 37%; }
+        .dandelion-2 .dandelion-stem { height: 180px; }
+        .dandelion-2 .dandelion-head { width: 315px; height: 315px; margin-bottom: -126px; }
+
+        .dandelion-3 { left: 55%; }
+        .dandelion-3 .dandelion-stem { height: 320px; }
+        .dandelion-3 .dandelion-head { width: 455px; height: 455px; margin-bottom: -182px; }
+
+        .dandelion-4 { left: 74%; }
+        .dandelion-4 .dandelion-stem { height: 240px; }
+        .dandelion-4 .dandelion-head { width: 385px; height: 385px; margin-bottom: -154px; }
+
+        .dandelion-5 { display: none; }
+
+        /* 花杆轻微摇摆 */
+        @keyframes stemSway1 {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+        @keyframes stemSway2 {
+            0%, 100% { transform: rotate(0.6deg); }
+            50% { transform: rotate(-0.6deg); }
+        }
+        @keyframes stemSway3 {
+            0%, 100% { transform: rotate(-0.5deg); }
+            50% { transform: rotate(0.7deg); }
+        }
+        @keyframes stemSway4 {
+            0%, 100% { transform: rotate(2deg); }
+            50% { transform: rotate(-2deg); }
+        }
+
+        .dandelion { animation: stemSway1 4s ease-in-out infinite; }
+        .dandelion-1 { animation: stemSway2 4.5s ease-in-out infinite; }
+        .dandelion-2 { animation: stemSway3 3.5s ease-in-out infinite; }
+        .dandelion-3 { animation: stemSway2 5s ease-in-out infinite; }
+        .dandelion-4 { animation: stemSway4 3.8s ease-in-out infinite; }
+
+        /* 头部轻微摇晃（幅度更小） */
+        @keyframes headSway1 {
+            0%, 100% { transform: rotate(-0.5deg); }
+            50% { transform: rotate(1.5deg); }
+        }
+        @keyframes headSway2 {
+            0%, 100% { transform: rotate(0.8deg); }
+            50% { transform: rotate(-0.8deg); }
+        }
+        @keyframes headSway3 {
+            0%, 100% { transform: rotate(-0.8deg); }
+            50% { transform: rotate(1.2deg); }
+        }
+
+        .dandelion-head {
+            animation: headSway1 3.2s ease-in-out infinite;
+        }
+        .dandelion-1 .dandelion-head { animation: headSway2 3.8s ease-in-out infinite; }
+        .dandelion-3 .dandelion-head { animation: headSway3 3.5s ease-in-out infinite; }
+
+        @media (max-width: 768px) {
+            .dandelion-head { width: 140px !important; height: 140px !important; margin-bottom: -56px !important; }
+            .dandelion-1 .dandelion-head { width: 182px !important; height: 182px !important; margin-bottom: -78px !important; }
+            .dandelion-3 .dandelion-head { width: 168px !important; height: 168px !important; margin-bottom: -63px !important; }
+            .dandelion-stem { height: 100px !important; }
+            .dandelion-1 .dandelion-stem { height: 130px !important; }
+            .dandelion-3 .dandelion-stem { height: 150px !important; }
+
+            .home-logo h1 {
+            .home-logo h1 {
+                font-size: 34px;
+                letter-spacing: 5px;
+            }
+
+            .home-logo .tagline {
+                font-size: 13px;
+            }
+
+            .btn-enter {
+                padding: 16px 40px;
+                font-size: 17px;
+                gap: 10px;
+            }
+
+            .home-logo {
+                margin-bottom: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="falling-stars" id="fallingStars"></div>
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <div class="nav-left">
+            <img src="/pictures/未来设计师大赛-logo-白.png" class="nav-logo">
+        </div>
+        <div class="nav-right">
+            <div class="nav-links">
+                <a href="/static/home.html" class="nav-link active">首页</a>
+                <a href="/static/index.html" class="nav-link">故事生成</a>
+                <a href="/static/about.html" class="nav-link">关于我们</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="home-page">
+    <div class="home-logo">
+        <h1>故事织机</h1>
+        <p class="tagline">用三个关键词，编织你的故事</p>
+        <p class="tagline-sub">输入任意词语，让 AI 为你谱写独一无二的篇章</p>
+
+    </div>
+
+    <div class="home-btn-area">
+        <a href="/generate" class="btn-enter">
+            <span>开始创作</span>
+            <span class="arrow">→</span>
+        </a>
+        <div class="home-bottom">
+        <p>✦ 由 AI 驱动 · 每一次都是全新的故事 ✦</p>
+        </div>
+    </div>
+
+
+</div>
+
+<!-- 六簇蒲公英 -->
+<div class="dandelions">
+    <div class="dandelion dandelion-0">
+        <div class="dandelion-head"></div>
+        <div class="dandelion-stem"></div>
+    </div>
+    <div class="dandelion dandelion-1">
+        <div class="dandelion-head"></div>
+        <div class="dandelion-stem"></div>
+    </div>
+    <div class="dandelion dandelion-2">
+        <div class="dandelion-head"></div>
+        <div class="dandelion-stem"></div>
+    </div>
+    <div class="dandelion dandelion-3">
+        <div class="dandelion-head"></div>
+        <div class="dandelion-stem"></div>
+    </div>
+    <div class="dandelion dandelion-4">
+        <div class="dandelion-head"></div>
+        <div class="dandelion-stem"></div>
+    </div>
+    <div class="dandelion dandelion-5">
+        <div class="dandelion-head"></div>
+        <div class="dandelion-stem"></div>
+    </div>
+</div>
+
+<script>
+// 洒落星光（复用主页效果）
+(function initFallingStars() {
+    const container = document.getElementById('fallingStars');
+    const count = 35;
+    for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.className = 'falling-star';
+        const size = 2 + Math.random() * 3;
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = '-10px';
+        star.style.animationDuration = (8 + Math.random() * 12) + 's';
+        star.style.animationDelay = (Math.random() * 20) + 's';
+        container.appendChild(star);
+    }
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+.env
+story_history.json
+__pycache__/
+*.pyc
+.idea/
+.venv/

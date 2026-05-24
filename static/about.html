@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我们 - 故事织机</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .about-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 56px);
+            padding: 60px 20px;
+            position: relative;
+        }
+        .about-card {
+            position: relative;
+            z-index: 1;
+            max-width: 640px;
+            width: 100%;
+            background: rgba(14, 26, 50, 0.5);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(200, 180, 60, 0.12);
+            border-radius: 24px;
+            padding: 48px 40px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.4), inset 0 0 60px rgba(60, 120, 200, 0.03);
+        }
+        .about-card h1 {
+            color: #e8d48b;
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 8px;
+            letter-spacing: 6px;
+            font-weight: 700;
+            text-shadow: 0 0 30px rgba(200, 180, 60, 0.2);
+        }
+        .about-card .divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(200, 180, 60, 0.4), transparent);
+            margin: 16px auto 32px;
+        }
+        .about-section {
+            margin-bottom: 32px;
+        }
+        .about-section:last-child {
+            margin-bottom: 0;
+        }
+        .about-section h2 {
+            color: #c4b070;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+        .about-section p, .about-section li {
+            color: rgba(200, 180, 60, 0.5);
+            font-size: 15px;
+            line-height: 1.8;
+        }
+        .about-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        .about-section li {
+            padding: 4px 0;
+        }
+        .about-section li::before {
+            content: "✦ ";
+            color: rgba(200, 180, 60, 0.25);
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            color: rgba(200, 180, 60, 0.5);
+            font-size: 15px;
+        }
+        .contact-item .label {
+            color: rgba(200, 180, 60, 0.3);
+            min-width: 60px;
+        }
+        .contact-item a {
+            color: rgba(200, 180, 60, 0.6);
+            text-decoration: none;
+            transition: color 0.25s;
+        }
+        .contact-item a:hover {
+            color: #e8d48b;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .feature-card {
+            background: rgba(200, 180, 60, 0.04);
+            border: 1px solid rgba(200, 180, 60, 0.08);
+            border-radius: 14px;
+            padding: 18px 16px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .feature-card:hover {
+            background: rgba(200, 180, 60, 0.08);
+            border-color: rgba(200, 180, 60, 0.2);
+            transform: translateY(-2px);
+        }
+        .feature-card .icon {
+            font-size: 22px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .feature-card .title {
+            color: #c4b070;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: block;
+        }
+        .feature-card .desc {
+            color: rgba(200, 180, 60, 0.4);
+            font-size: 13px;
+            line-height: 1.6;
+            display: block;
+        }
+        .team-grid {
+            display: flex;
+            gap: 32px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .team-member {
+            text-align: center;
+        }
+        .team-member .name {
+            color: rgba(200, 180, 60, 0.6);
+            font-size: 15px;
+        }
+        .about-footer {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(200, 180, 60, 0.08);
+        }
+        .about-footer p {
+            color: rgba(200, 180, 60, 0.2);
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+        @media (max-width: 768px) {
+            .about-card {
+                padding: 32px 24px;
+                border-radius: 16px;
+            }
+            .about-card h1 {
+                font-size: 24px;
+                letter-spacing: 4px;
+            }
+            .about-section h2 {
+                font-size: 14px;
+            }
+            .about-section p, .about-section li {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="falling-stars" id="fallingStars"></div>
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <div class="nav-left">
+            <img src="/pictures/未来设计师大赛-logo-白.png" class="nav-logo">
+        </div>
+        <div class="nav-right">
+            <div class="nav-links">
+                <a href="/static/home.html" class="nav-link">首页</a>
+                <a href="/static/index.html" class="nav-link">故事生成</a>
+                <a href="/static/about.html" class="nav-link active">关于我们</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="about-page">
+    <div class="about-card">
+        <h1>关于我们</h1>
+        <div class="divider"></div>
+
+        <div class="about-section">
+            <h2>项目介绍</h2>
+            <p>故事织机是一款基于 AI 的创意写作工具。输入三个关键词，选择风格与篇幅，AI 将为你编织出一篇独一无二的短篇故事。无论是温馨治愈、暗黑悬疑还是搞笑脑洞，每一次生成都是全新的惊喜。</p>
+        </div>
+
+        <div class="about-section">
+            <h2>功能亮点</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <span class="icon">⚡</span>
+                    <span class="title">流式生成</span>
+                    <span class="desc">AI 实时输出故事，无需等待</span>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">✏️</span>
+                    <span class="title">修改与续写</span>
+                    <span class="desc">像与 AI 协作般调整故事</span>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">📜</span>
+                    <span class="title">历史记录</span>
+                    <span class="desc">自动保存，灵感永不丢失</span>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">🧠</span>
+                    <span class="title">多模型支持</span>
+                    <span class="desc">智谱 GLM · DeepSeek 可选</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-section">
+            <h2>团队成员</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <span class="name">蒋丽颖</span>
+                </div>
+                <div class="team-member">
+                    <span class="name">曾昊天</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-section">
+            <h2>联系我们</h2>
+            <div class="contact-item">
+                <span class="label">邮箱</span>
+                <a href="mailto:Chiang_link@hotmail.com">Chiang_link@hotmail.com</a>
+            </div>
+            <div class="contact-item">
+                <span class="label">GitHub</span>
+                <a href="https://github.com/Chiang-Link/AI_Story_party" target="_blank">github.com/Chiang-Link/AI_Story_party</a>
+            </div>
+        </div>
+
+        <div class="about-footer">
+            <p>✦ 由 AI 驱动 · 每一次都是全新的故事 ✦</p>
+        </div>
+    </div>
+</div>
+
+<script>
+(function initFallingStars() {
+    const container = document.getElementById('fallingStars');
+    const count = 35;
+    for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.className = 'falling-star';
+        const size = 2 + Math.random() * 3;
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = '-10px';
+        star.style.animationDuration = (8 + Math.random() * 12) + 's';
+        star.style.animationDelay = (Math.random() * 20) + 's';
+        container.appendChild(star);
+    }
+})();
+</script>
+
+</body>
+</html>

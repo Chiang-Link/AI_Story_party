@@ -8,6 +8,7 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
+    font-size: 16px;
 }
 
 /* ===== 装饰性旋涡 ===== */
@@ -34,11 +35,8 @@ body::before {
     inset: 0;
     z-index: -2;
     background:
-        /* 夜空底色 */
         linear-gradient(180deg, #0a1628 0%, #0f1f3a 30%, #142850 55%, #1a3a5c 75%, #0f1f3a 100%);
 }
-
-/* 油画笔触纹理层 — 模拟梵高粗犷风格 */
 body::after {
     content: '';
     position: fixed;
@@ -46,30 +44,19 @@ body::after {
     z-index: -1;
     opacity: 0.85;
     background:
-        /* 大旋涡 - 右上星空 */
         radial-gradient(ellipse 220% 160% at 75% 15%, rgba(100, 180, 245, 0.45) 0%, transparent 48%),
         radial-gradient(ellipse 150% 110% at 68% 18%, rgba(230, 210, 80, 0.35) 0%, transparent 38%),
         radial-gradient(ellipse 120% 90% at 72% 8%, rgba(255, 235, 110, 0.28) 0%, transparent 32%),
         radial-gradient(ellipse 90% 70% at 80% 22%, rgba(120, 190, 255, 0.25) 0%, transparent 38%),
-
-        /* 左中柏树暗影 */
         radial-gradient(ellipse 40% 80% at 25% 45%, rgba(15, 30, 50, 0.5) 0%, transparent 60%),
         radial-gradient(ellipse 30% 60% at 20% 50%, rgba(10, 20, 35, 0.4) 0%, transparent 55%),
-
-        /* 小旋涡 - 左上方 */
         radial-gradient(ellipse 60% 50% at 30% 18%, rgba(60, 130, 210, 0.18) 0%, transparent 50%),
         radial-gradient(ellipse 40% 30% at 35% 22%, rgba(180, 170, 70, 0.10) 0%, transparent 40%),
-
-        /* 底部村庄暗影 */
         radial-gradient(ellipse 80% 30% at 50% 85%, rgba(10, 15, 25, 0.4) 0%, transparent 50%),
         radial-gradient(ellipse 60% 20% at 40% 88%, rgba(20, 30, 50, 0.3) 0%, transparent 45%),
         radial-gradient(ellipse 50% 15% at 65% 90%, rgba(15, 25, 40, 0.25) 0%, transparent 40%),
-
-        /* 月光晕 */
         radial-gradient(circle 100px at 72% 12%, rgba(255, 235, 160, 0.12) 0%, transparent 100%),
         radial-gradient(circle 200px at 72% 12%, rgba(255, 230, 140, 0.06) 0%, transparent 100%),
-
-        /* 横向笔触条纹 — 模仿梵高短线 */
         repeating-linear-gradient(92deg,
             transparent 0px, transparent 20px,
             rgba(60, 120, 200, 0.02) 20px, rgba(60, 120, 200, 0.02) 21px,
@@ -78,8 +65,6 @@ body::after {
             transparent 0px, transparent 30px,
             rgba(200, 180, 60, 0.012) 30px, rgba(200, 180, 60, 0.012) 31px,
             transparent 31px, transparent 60px),
-
-        /* 星星 */
         radial-gradient(4px 5px at 72% 12%, rgba(255, 235, 160, 0.95), transparent),
         radial-gradient(3px 4px at 68% 18%, rgba(255, 220, 130, 0.85), transparent),
         radial-gradient(5px 6px at 78% 8%, rgba(255, 245, 170, 0.9), transparent),
@@ -95,8 +80,6 @@ body::after {
         radial-gradient(1.5px 1.5px at 20% 50%, rgba(255, 200, 100, 0.3), transparent),
         radial-gradient(1.5px 1.5px at 90% 40%, rgba(255, 210, 130, 0.25), transparent),
         radial-gradient(1px 1px at 35% 55%, rgba(255, 220, 120, 0.2), transparent),
-
-        /* 画布纹理 */
         repeating-conic-gradient(rgba(255,255,255,0.003) 0% 25%, transparent 0% 50%) 0 0 / 4px 4px;
     animation: paintGlow 6s ease-in-out infinite alternate;
 }
@@ -117,22 +100,11 @@ body::after {
     animation: starFall linear infinite;
 }
 @keyframes starFall {
-    0% {
-        transform: translateY(-10px) scale(1);
-        opacity: 0;
-    }
-    5% {
-        opacity: 1;
-    }
-    90% {
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(calc(100vh + 10px)) scale(0.3);
-        opacity: 0;
-    }
+    0% { transform: translateY(-10px) scale(1); opacity: 0; }
+    5% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(calc(100vh + 10px)) scale(0.3); opacity: 0; }
 }
-
 @keyframes paintGlow {
     0% { opacity: 0.8; }
     100% { opacity: 0.95; }
@@ -155,11 +127,7 @@ body::after {
     align-items: center;
     justify-content: space-between;
 }
-.nav-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+.nav-left { display: flex; align-items: center; gap: 10px; }
 .nav-menu-btn {
     display: none;
     background: none;
@@ -179,11 +147,13 @@ body::after {
     letter-spacing: 3px;
     text-shadow: 0 0 20px rgba(200, 180, 60, 0.3);
 }
-.nav-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.nav-logo {
+    height: 28px;
+    width: auto;
+    opacity: 0.8;
+    vertical-align: middle;
 }
+.nav-right { display: flex; align-items: center; gap: 12px; }
 .nav-settings-btn {
     padding: 8px 18px;
     border-radius: 20px;
@@ -201,8 +171,21 @@ body::after {
     color: #f0e0a0;
     box-shadow: 0 0 20px rgba(200, 180, 60, 0.15);
 }
+.nav-links { display: flex; align-items: center; gap: 16px; }
+.nav-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.25s;
+}
+.nav-link:hover {
+    color: #e8d48b;
+}
+.nav-link.active {
+    color: #ffffff;
+}
 
-/* ===== 设置弹窗 ===== */
+/* ===== 设置弹窗（简化版） ===== */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -307,7 +290,6 @@ body::after {
     border-color: rgba(200, 180, 60, 0.4);
     color: #f0e0a0;
 }
-
 .modal input[type="password"] {
     width: 100%;
     padding: 12px 16px;
@@ -346,6 +328,8 @@ body::after {
     height: calc(100vh - 56px);
     position: sticky;
     top: 56px;
+    transition: width 0.3s ease, padding 0.3s ease, min-width 0.3s ease;
+    z-index: 1;
 }
 .sidebar-header {
     display: flex;
@@ -357,9 +341,87 @@ body::after {
 }
 .sidebar-header h2 {
     color: #c4b070;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     letter-spacing: 1px;
+}
+.sidebar-toggle {
+    background: none;
+    border: none;
+    color: rgba(200, 180, 60, 0.3);
+    cursor: pointer;
+    font-size: 12px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+.sidebar-toggle:hover {
+    background: rgba(200, 180, 60, 0.1);
+    color: rgba(200, 180, 60, 0.6);
+}
+.sidebar.collapsed {
+    width: 44px;
+    min-width: 44px;
+    padding: 24px 10px;
+}
+.sidebar.collapsed .sidebar-list,
+.sidebar.collapsed .sidebar-empty {
+    opacity: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+.sidebar.collapsed .sidebar-header h2,
+.sidebar.collapsed .btn-clear-all {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+.sidebar.collapsed .sidebar-header {
+    justify-content: center;
+    padding-bottom: 0;
+    border-bottom: none;
+    margin-bottom: 0;
+    gap: 0;
+}
+.sidebar.collapsed .sidebar-toggle {
+    transform: rotate(180deg);
+}
+
+.sidebar-header h2,
+.sidebar .btn-clear-all,
+.sidebar-list,
+.sidebar-empty,
+.sidebar-footer {
+    transition: opacity 0.6s ease, width 0.6s ease;
+}
+.sidebar-footer {
+    padding-top: 12px;
+    border-top: 1px solid rgba(200, 180, 60, 0.1);
+    margin-top: auto;
+}
+.sidebar.collapsed .sidebar-footer {
+    opacity: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+.sidebar-settings-btn {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(200, 180, 60, 0.15);
+    background: rgba(200, 180, 60, 0.06);
+    color: #c4b070;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.3s;
+    font-family: inherit;
+}
+.sidebar-settings-btn:hover {
+    background: rgba(200, 180, 60, 0.14);
+    border-color: rgba(200, 180, 60, 0.35);
+    color: #e8d48b;
 }
 .btn-clear-all {
     background: none;
@@ -466,8 +528,9 @@ body::after {
     inset: 0;
     background: rgba(0,0,0,0.5);
     z-index: 80;
+    pointer-events: none;
 }
-.sidebar-overlay.active { display: block; }
+.sidebar-overlay.active { display: block; pointer-events: auto; }
 
 /* ===== 主容器 ===== */
 .container {
@@ -486,7 +549,7 @@ h1 {
     position: relative;
     z-index: 1;
     color: #e8d48b;
-    font-size: 30px;
+    font-size: 34px;
     text-align: center;
     margin-bottom: 6px;
     letter-spacing: 4px;
@@ -496,7 +559,7 @@ h1 {
 .subtitle {
     color: rgba(200, 180, 60, 0.35);
     text-align: center;
-    font-size: 14px;
+    font-size: 15px;
     margin-bottom: 32px;
     font-style: italic;
     letter-spacing: 1px;
@@ -510,19 +573,16 @@ h1 {
     justify-content: space-between;
     align-items: center;
 }
-.keyword-group {
-    display: flex;
-    gap: 10px;
-}
+.keyword-group { display: flex; gap: 10px; }
 .keyword-group input {
     flex: 1;
     min-width: 0;
-    padding: 12px 16px;
+    padding: 14px 18px;
     border-radius: 12px;
     border: 1px solid rgba(200, 180, 60, 0.12);
     background: rgba(10, 22, 40, 0.5);
     color: #d4c8a0;
-    font-size: 15px;
+    font-size: 16px;
     outline: none;
     transition: all 0.25s;
     font-family: inherit;
@@ -534,13 +594,13 @@ h1 {
 }
 .btn-random {
     white-space: nowrap;
-    padding: 12px 18px;
+    padding: 12px 20px;
     border-radius: 20px;
     border: 1px solid rgba(200, 180, 60, 0.15);
     background: rgba(200, 180, 60, 0.06);
     color: #c4b070;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 14px;
     transition: all 0.3s;
     font-family: inherit;
 }
@@ -550,20 +610,18 @@ h1 {
     color: #e8d48b;
     box-shadow: 0 0 20px rgba(200, 180, 60, 0.08);
 }
-
-/* 右侧选项组 */
 .option-group {
     display: flex;
     gap: 8px;
     align-items: center;
 }
 .select-opt {
-    padding: 8px 28px 8px 12px;
+    padding: 8px 30px 8px 14px;
     border-radius: 20px;
     border: 1px solid rgba(200, 180, 60, 0.15);
     background: rgba(10, 22, 40, 0.5);
     color: #c4b070;
-    font-size: 13px;
+    font-size: 14px;
     outline: none;
     cursor: pointer;
     transition: all 0.3s;
@@ -580,10 +638,7 @@ h1 {
     box-shadow: 0 0 15px rgba(200, 180, 60, 0.05);
 }
 .select-opt:focus { border-color: rgba(200, 180, 60, 0.4); }
-.select-opt option {
-    background: #0e1838;
-    color: #c4b070;
-}
+.select-opt option { background: #0e1838; color: #c4b070; }
 
 /* 用户编辑区 */
 .user-edit {
@@ -596,7 +651,7 @@ h1 {
     border: 1px solid rgba(200, 180, 60, 0.12);
     background: rgba(10, 22, 40, 0.5);
     color: #d4c8a0;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.7;
     outline: none;
     resize: vertical;
@@ -613,12 +668,12 @@ h1 {
     position: relative;
     z-index: 1;
     width: 100%;
-    padding: 14px;
+    padding: 16px;
     border: none;
     border-radius: 20px;
     background: linear-gradient(135deg, rgba(200, 180, 60, 0.2), rgba(200, 180, 60, 0.08));
     color: #e8d48b;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.35s;
@@ -661,7 +716,7 @@ h1 {
     background: rgba(10, 22, 40, 0.4);
     border: 1px solid rgba(200, 180, 60, 0.08);
     color: rgba(220, 210, 180, 0.9);
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.9;
     white-space: pre-wrap;
     font-family: inherit;
@@ -686,6 +741,55 @@ h1 {
 .model-used {
     color: rgba(200, 180, 60, 0.2);
     font-size: 11px;
+}
+.output-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.btn-continue {
+    background: rgba(80, 200, 120, 0.06);
+    border: 1px solid rgba(80, 200, 120, 0.15);
+    color: #80c9a0;
+    padding: 6px 16px;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.3s;
+    flex-shrink: 0;
+    font-family: inherit;
+}
+.btn-continue:hover {
+    background: rgba(80, 200, 120, 0.14);
+    border-color: rgba(80, 200, 120, 0.3);
+    color: #a8e0c0;
+}
+.btn-continue:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+.btn-revise {
+    background: rgba(100, 180, 240, 0.06);
+    border: 1px solid rgba(100, 180, 240, 0.15);
+    color: #8ab8e0;
+    padding: 6px 16px;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.3s;
+    flex-shrink: 0;
+    font-family: inherit;
+}
+.btn-revise:hover {
+    background: rgba(100, 180, 240, 0.14);
+    border-color: rgba(100, 180, 240, 0.3);
+    color: #b0d8f0;
+}
+.btn-revise:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
 }
 .btn-save {
     background: rgba(200, 180, 60, 0.06);
@@ -722,12 +826,13 @@ h1 {
 }
 .error.active { display: block; }
 
-/* ===== 响应式 — 手机端抽屉侧边栏 ===== */
+/* ===== 响应式 — 手机端 ===== */
 @media (max-width: 768px) {
     .nav-menu-btn { display: block; }
-
     .nav-inner { padding: 0 12px; height: 50px; }
     .nav-title { font-size: 16px; letter-spacing: 2px; }
+    .nav-links { gap: 2px; }
+    .nav-link { font-size: 12px; padding: 5px 10px; }
     .nav-settings-btn { padding: 6px 14px; font-size: 12px; }
 
     .layout { flex-direction: column; }
@@ -747,52 +852,34 @@ h1 {
         padding-top: 20px;
     }
     .sidebar.open { left: 0; }
-
     .sidebar-overlay.active { display: block; }
-
-    .sidebar-list {
-        flex: 1;
-        overflow-y: auto;
-    }
+    .sidebar-list { flex: 1; overflow-y: auto; }
 
     .container { margin: 8px; padding: 20px 16px; border-radius: 16px; }
 
-    h1 { font-size: 22px; letter-spacing: 2px; }
-    .subtitle { font-size: 12px; margin-bottom: 20px; }
+    h1 { font-size: 24px; letter-spacing: 2px; }
+    .subtitle { font-size: 13px; margin-bottom: 20px; }
 
     .section { margin-bottom: 16px; }
-
-    /* 手机端下拉菜单/按钮适应 */
-    .section-label {
-        flex-wrap: wrap;
-        gap: 6px;
-        font-size: 13px;
-    }
-    .option-group {
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        gap: 6px;
-    }
+    .section-label { flex-wrap: wrap; gap: 6px; font-size: 13px; }
+    .option-group { flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
     .select-opt { font-size: 12px; padding: 6px 24px 6px 10px; background-position: right 8px center; }
     .btn-random { font-size: 12px; padding: 10px 14px; }
 
     .keyword-group { flex-direction: column; gap: 8px; }
     .keyword-group input { font-size: 14px; padding: 10px 14px; }
 
-    .btn-generate { font-size: 14px; padding: 12px; letter-spacing: 1px; }
+    .btn-generate { font-size: 15px; padding: 12px; letter-spacing: 1px; }
+    .loading-text { font-size: 14px; }
 
-    .loading-text { font-size: 13px; }
-
-    .output { padding: 20px 16px; font-size: 14px; line-height: 1.7; }
+    .output { padding: 20px 16px; font-size: 15px; line-height: 1.7; }
     .output-header { flex-wrap: wrap; gap: 8px; }
-    .output .keywords-used { font-size: 12px; }
-    .btn-save { font-size: 12px; padding: 5px 12px; }
+    .output .keywords-used { font-size: 13px; }
+    .btn-save { font-size: 13px; padding: 5px 12px; }
 
-    /* 弹窗全屏适应 */
     .modal { width: 100%; max-width: 92vw; }
     .modal-body { padding: 16px 20px 20px; }
     .modal-header { padding: 14px 20px 12px; font-size: 15px; }
 
-    /* 星星减少数量 */
     .falling-star { opacity: 0.6; }
 }
