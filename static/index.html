@@ -5,6 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 关键词故事生成器</title>
     <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .ripple-container {
+            position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+        }
+        .ripple {
+            position: absolute; border-radius: 50%;
+            transform: translate(-50%,-50%) scale(0); pointer-events: none;
+            background: radial-gradient(circle at 40% 35%, rgba(255,255,255,0.18) 0%, rgba(200,180,60,0.12) 15%, rgba(200,180,60,0.035) 45%, transparent 65%);
+            border: 1.5px solid rgba(200,180,60,0.3);
+            box-shadow: inset 0 -4px 12px rgba(100,150,220,0.12), inset 0 4px 8px rgba(255,255,255,0.1), 0 0 20px rgba(200,180,60,0.08);
+            backdrop-filter: blur(2px);
+        }
+        .ripple:nth-child(odd) {
+            border-color: rgba(200,180,60,0.22);
+            background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.14) 0%, rgba(200,180,60,0.08) 15%, transparent 60%);
+            box-shadow: inset 0 -3px 10px rgba(100,150,220,0.1), inset 0 3px 6px rgba(255,255,255,0.08), 0 0 16px rgba(200,180,60,0.06);
+        }
+        .ripple:nth-child(3n) {
+            border-color: rgba(180,200,255,0.15);
+            background: radial-gradient(circle at 45% 40%, rgba(255,255,255,0.1) 0%, rgba(180,200,255,0.07) 15%, transparent 55%);
+            box-shadow: inset 0 -3px 10px rgba(100,150,220,0.12), inset 0 3px 6px rgba(255,255,255,0.06), 0 0 14px rgba(180,200,255,0.06);
+        }
+        .ripple-1 { animation: ripple-1 1.2s ease-out forwards; }
+        .ripple-2 { animation: ripple-2 1.0s ease-out forwards; }
+        .ripple-3 { animation: ripple-3 0.9s ease-out forwards; }
+        .ripple-4 { animation: ripple-4 0.7s ease-out forwards; }
+        @keyframes ripple-1 { to { transform: translate(-50%,-50%) scale(5); opacity: 0; } }
+        @keyframes ripple-2 { to { transform: translate(-50%,-50%) scale(4); opacity: 0; } }
+        @keyframes ripple-3 { to { transform: translate(-50%,-50%) scale(3); opacity: 0; } }
+        @keyframes ripple-4 { to { transform: translate(-50%,-50%) scale(2); opacity: 0; } }
+    </style>
 </head>
 <body>
 
@@ -21,7 +52,8 @@
         <div class="nav-right">
             <div class="nav-links">
                 <a href="/static/home.html" class="nav-link">首页</a>
-                <a href="/static/index.html" class="nav-link active">故事生成</a>
+                <a href="/static/dream.html" class="nav-link">梦境</a>
+                <a href="/static/index.html" class="nav-link active">故事织机</a>
                 <a href="/static/about.html" class="nav-link">关于我们</a>
             </div>
         </div>
@@ -157,10 +189,49 @@
     </div>
 </div>
 
+<div class="ripple-container" id="rippleContainer"></div>
+
 <script>
 // 防止浏览器恢复滚动位置导致刷新后自动下滑
 history.scrollRestoration = 'manual';
 window.scrollTo(0, 0);
+</script>
+<script>
+// 点击水波纹
+(function initRipple() {
+    var container = document.getElementById('rippleContainer');
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('a')) return;
+        spawnRipple(e.clientX, e.clientY);
+    });
+    document.querySelectorAll('a').forEach(function(a) {
+        a.addEventListener('click', function(e) {
+            var href = a.getAttribute('href');
+            if (!href || href === '#' || href.startsWith('javascript:')) return;
+            e.preventDefault();
+            var rect = a.getBoundingClientRect();
+            var cx = rect.left + rect.width / 2;
+            var cy = rect.top + rect.height / 2;
+            spawnRipple(cx, cy);
+            setTimeout(function() { window.location.href = href; }, 350);
+        });
+    });
+    function spawnRipple(cx, cy) {
+        var sizes = [20, 35, 50, 65];
+        var delays = [0, 60, 130, 210];
+        sizes.forEach(function(size, i) {
+            var ripple = document.createElement('div');
+            ripple.className = 'ripple ripple-' + (i + 1);
+            ripple.style.width = size + 'px';
+            ripple.style.height = size + 'px';
+            ripple.style.left = cx + 'px';
+            ripple.style.top = cy + 'px';
+            ripple.style.animationDelay = delays[i] + 'ms';
+            container.appendChild(ripple);
+            ripple.addEventListener('animationend', function() { ripple.remove(); });
+        });
+    }
+})();
 </script>
 <script src="/static/app-frontend.js"></script>
 </body>
