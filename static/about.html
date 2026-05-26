@@ -196,6 +196,108 @@
         @keyframes ripple-2 { to { transform: translate(-50%,-50%) scale(4); opacity: 0; } }
         @keyframes ripple-3 { to { transform: translate(-50%,-50%) scale(3); opacity: 0; } }
         @keyframes ripple-4 { to { transform: translate(-50%,-50%) scale(2); opacity: 0; } }
+
+        /* 枝干 — 左下 */
+        .about-stem-wrap {
+            position: fixed;
+            left: 15%;
+            bottom: 0;
+            z-index: 50;
+            pointer-events: none;
+        }
+        .about-stem {
+            width: 3px;
+            height: 0;
+            background: rgba(200, 180, 60, 0.6);
+            border-radius: 2px;
+            transform-origin: bottom center;
+            transition: none;
+        }
+        .about-stem-wrap.grow .about-stem {
+            height: 45vh;
+            transition: height 3s ease;
+        }
+        .about-flower {
+            position: fixed;
+            left: calc(15% - 200px);
+            bottom: calc(45vh - 190px);
+            width: 400px;
+            height: auto;
+            opacity: 0;
+            transform: scale(0.3);
+            transform-origin: center center;
+            transition: none;
+            z-index: 100;
+        }
+        .about-stem-wrap.grow .about-flower {
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 5s ease, transform 5s ease;
+            transition-delay: 2s;
+        }
+
+        /* 右上枝条 — 水平翻转 + 垂直翻转 */
+        .about-stem-wrap-right {
+            position: fixed;
+            right: 15%;
+            top: 0;
+            z-index: 50;
+            pointer-events: none;
+        }
+        .about-stem-right {
+            width: 3px;
+            height: 0;
+            background: rgba(200, 180, 60, 0.6);
+            border-radius: 2px;
+            transform-origin: top center;
+            transition: none;
+        }
+        .about-stem-wrap-right.grow .about-stem-right {
+            height: 22.5vh;
+            transition: height 3s ease;
+        }
+        .about-flower-right {
+            position: fixed;
+            right: calc(15% - 100px);
+            top: calc(22.5vh - 100px);
+            width: 200px;
+            height: auto;
+            opacity: 0;
+            transform: scale(0.3) scaleX(-1);
+            transform-origin: center center;
+            transition: none;
+        }
+        .about-stem-wrap-right.grow .about-flower-right {
+            opacity: 1;
+            transform: scale(1) scaleX(-1);
+            transition: opacity 5s ease, transform 5s ease;
+            transition-delay: 2s;
+        }
+
+        /* 蝴蝶视频 */
+        .about-butterfly {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(2.5);
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 2s ease;
+            mix-blend-mode: screen;
+            width: 300px;
+            height: auto;
+        }
+        .about-butterfly.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .about-stem-wrap.grow .about-stem { height: 25vh; }
+            .about-flower { left: calc(15% - 100px); bottom: calc(25vh - 100px); width: 200px; }
+            .about-stem-wrap-right.grow .about-stem-right { height: 25vh; }
+            .about-flower-right { right: calc(15% - 50px); top: calc(25vh - 50px); width: 100px; }
+        }
     </style>
 </head>
 <body>
@@ -284,9 +386,30 @@
     </div>
 </div>
 
+<div class="about-stem-wrap" id="aboutStemWrap">
+    <div class="about-stem" id="aboutStem"></div>
+    <img src="/pictures/rongrong.png" class="about-flower" id="aboutFlower" alt="">
+</div>
+<div class="about-stem-wrap-right" id="aboutStemWrapRight">
+    <div class="about-stem-right" id="aboutStemRight"></div>
+    <img src="/pictures/rongrong.png" class="about-flower-right" id="aboutFlowerRight" alt="">
+</div>
+<video class="about-butterfly" id="aboutButterfly" src="/static/蝴蝶.mp4" muted playsinline></video>
+
 <div class="ripple-container" id="rippleContainer"></div>
 
 <script>
+// 花朵绽放 + 蝴蝶动画
+(function initBloom() {
+    setTimeout(function() {
+        document.getElementById('aboutStemWrap').classList.add('grow');
+        document.getElementById('aboutStemWrapRight').classList.add('grow');
+        var bf = document.getElementById('aboutButterfly');
+        bf.classList.add('show');
+        bf.play();
+    }, 500);
+})();
+
 (function initFallingStars() {
     const container = document.getElementById('fallingStars');
     const count = 35;

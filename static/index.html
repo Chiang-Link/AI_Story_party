@@ -35,9 +35,297 @@
         @keyframes ripple-2 { to { transform: translate(-50%,-50%) scale(4); opacity: 0; } }
         @keyframes ripple-3 { to { transform: translate(-50%,-50%) scale(3); opacity: 0; } }
         @keyframes ripple-4 { to { transform: translate(-50%,-50%) scale(2); opacity: 0; } }
+
+        /* 页面跳转过渡遮罩 */
+        .page-transition {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: #0a0e1a;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+        }
+        .page-transition.incoming {
+            opacity: 1;
+        }
+        .page-transition.incoming.done {
+            opacity: 0;
+        }
+
+        /* 最大外层盒子 — 居中外层 */
+        .page-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            padding: 20px;
+        }
+        /* 双卡片行 — 整体居中 */
+        .card-row {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        /* 双卡片通用样式 */
+        .card {
+            background: rgba(14, 26, 50, 0.55);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(200, 180, 60, 0.12);
+            border-radius: 24px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.4), inset 0 0 60px rgba(60, 120, 200, 0.03);
+            overflow: hidden;
+        }
+        /* 历史记录卡片（左侧） */
+        .card-history {
+            width: 240px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 24px 16px;
+            max-height: calc(100vh - 96px);
+            overflow-y: auto;
+        }
+        .card-history::-webkit-scrollbar { width: 4px; }
+        .card-history::-webkit-scrollbar-track { background: transparent; }
+        .card-history::-webkit-scrollbar-thumb { background: rgba(200, 180, 60, 0.2); border-radius: 4px; }
+        .card-history .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(200, 180, 60, 0.1);
+        }
+        .card-history .card-header h2 {
+            color: #c4b070;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .card-history .sidebar-toggle,
+        .card-history .btn-clear-all {
+            background: none;
+            border: none;
+            color: rgba(200, 180, 60, 0.3);
+            cursor: pointer;
+            font-size: 15px;
+            padding: 4px 6px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .card-history .sidebar-toggle:hover,
+        .card-history .btn-clear-all:hover {
+            background: rgba(200, 180, 60, 0.1);
+            color: rgba(200, 180, 60, 0.6);
+        }
+        .card-history .sidebar-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        /* 每条历史记录为独立小卡片 */
+        .card-history .history-item {
+            background: rgba(200, 180, 60, 0.04);
+            border: 1px solid rgba(200, 180, 60, 0.08);
+            border-radius: 12px;
+            padding: 10px 12px;
+            cursor: pointer;
+            transition: all 0.25s;
+            position: relative;
+        }
+        .card-history .history-item:hover {
+            background: rgba(200, 180, 60, 0.08);
+            border-color: rgba(200, 180, 60, 0.18);
+        }
+        .card-history .history-item.active {
+            background: rgba(200, 180, 60, 0.1);
+            border-color: rgba(200, 180, 60, 0.25);
+        }
+        .card-history .history-item:hover .history-del { opacity: 1; }
+        .card-history .history-del {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 20px;
+            height: 20px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(200, 180, 60, 0.1);
+            color: rgba(200, 180, 60, 0.4);
+            font-size: 14px;
+            line-height: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.15s;
+            padding: 0;
+            opacity: 0;
+        }
+        .card-history .history-del:hover {
+            background: rgba(200, 100, 60, 0.25);
+            color: #e89070;
+        }
+        .card-history .h-time {
+            color: rgba(200, 180, 60, 0.3);
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+        .card-history .h-words {
+            color: #c4b070;
+            font-size: 13px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .card-history .h-preview {
+            color: rgba(200, 180, 60, 0.3);
+            font-size: 12px;
+            margin-top: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-style: italic;
+        }
+        .card-history .sidebar-list::-webkit-scrollbar { width: 4px; }
+        .card-history .sidebar-list::-webkit-scrollbar-track { background: transparent; }
+        .card-history .sidebar-list::-webkit-scrollbar-thumb {
+            background: rgba(200, 180, 60, 0.15);
+            border-radius: 4px;
+        }
+        .card-history .sidebar-empty {
+            color: rgba(200, 180, 60, 0.2);
+            font-size: 13px;
+            text-align: center;
+            padding: 30px 0;
+            font-style: italic;
+        }
+        .card-history .sidebar-empty.hidden { display: none; }
+        /* 侧边栏遮罩（手机端） */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 80;
+            pointer-events: none;
+        }
+        .sidebar-overlay.active { display: block; pointer-events: auto; }
+
+        /* 旧的 sidebar 全局样式覆盖 — 收起功能 */
+        .card-history.collapsed {
+            width: 44px;
+            min-width: 44px;
+            padding: 24px 10px;
+        }
+        .card-history.collapsed .sidebar-list,
+        .card-history.collapsed .sidebar-empty {
+            opacity: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .card-history.collapsed .card-header h2,
+        .card-history.collapsed .btn-clear-all {
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .card-history.collapsed .card-header {
+            justify-content: center;
+            padding-bottom: 0;
+            border-bottom: none;
+            margin-bottom: 0;
+            gap: 0;
+        }
+        .card-history.collapsed .card-footer {
+            opacity: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .card-history .card-footer {
+            padding-top: 12px;
+            border-top: 1px solid rgba(200, 180, 60, 0.1);
+            margin-top: auto;
+        }
+        .card-history .sidebar-settings-btn {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(200, 180, 60, 0.15);
+            background: rgba(200, 180, 60, 0.06);
+            color: #c4b070;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .card-history .sidebar-settings-btn:hover {
+            background: rgba(200, 180, 60, 0.14);
+            border-color: rgba(200, 180, 60, 0.35);
+            color: #e8d48b;
+        }
+        /* 故事织机卡片（右侧 — 主内容） */
+        .card-loom {
+            width: 680px;
+            position: relative;
+            padding: 40px;
+            max-height: calc(100vh - 96px);
+            overflow-y: auto;
+        }
+        .card-loom::-webkit-scrollbar { width: 4px; }
+        .card-loom::-webkit-scrollbar-track { background: transparent; }
+        .card-loom::-webkit-scrollbar-thumb { background: rgba(200, 180, 60, 0.2); border-radius: 4px; }
+        /* 压矮 output-meta 盒子 */
+        .card-loom .output-meta {
+            padding: 2px 0 2px;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .card-loom .container {
+            all: unset;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .page-wrapper {
+                flex-direction: column;
+                padding: 8px;
+                gap: 8px;
+            }
+            .card-history {
+                position: fixed;
+                top: 0;
+                left: -280px;
+                width: 260px;
+                height: 100vh;
+                z-index: 90;
+                border-right: 1px solid rgba(200, 180, 60, 0.15);
+                border-radius: 0;
+                transition: left 0.3s ease;
+                background: rgba(10, 22, 40, 0.95);
+                backdrop-filter: blur(20px);
+                padding: 20px 16px 24px;
+                border: none;
+                box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+            }
+            .card-history.open { left: 0; }
+            .card-history .sidebar-list {
+                max-height: none;
+                flex: 1;
+            }
+            .card-loom {
+                padding: 20px 16px;
+                border-radius: 16px;
+            }
+        }
     </style>
 </head>
 <body>
+
+<!-- 页面跳转过渡遮罩 -->
+<div class="page-transition" id="pageTransition"></div>
 
 <!-- 洒落星光 -->
 <div class="falling-stars" id="fallingStars"></div>
@@ -95,26 +383,27 @@
     </div>
 </div>
 
-<div class="layout">
-    <!-- 侧边栏遮罩（手机端） -->
+<div class="page-wrapper">
+    <!-- 侧边栏遮罩（手机端用） -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
-    <!-- 侧边栏 -->
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
+
+    <div class="card-row">
+    <!-- 历史记录卡片（左侧） -->
+    <aside class="card card-history" id="sidebar">
+        <div class="card-header">
             <button class="sidebar-toggle" id="sidebarToggle" title="收起/展开">◀</button>
             <h2>历史记录</h2>
             <button class="btn-clear-all" id="clearAllBtn" title="清空所有历史">🗑️</button>
         </div>
         <div class="sidebar-list" id="historyList"></div>
         <div class="sidebar-empty" id="historyEmpty">暂无历史故事</div>
-        <div class="sidebar-footer">
+        <div class="card-footer">
             <button class="sidebar-settings-btn" id="sidebarSettingsBtn">⚙️ 设置</button>
         </div>
     </aside>
 
-    <!-- 主内容 -->
-    <div class="container">
-        <!-- 装饰性旋涡 -->
+    <!-- 故事织机卡片（右侧） -->
+    <div class="card card-loom">
         <svg class="vortex" viewBox="0 0 500 500" preserveAspectRatio="xMidYMid meet">
             <defs>
                 <radialGradient id="vg-vortex" cx="50%" cy="50%" r="50%">
@@ -181,12 +470,10 @@
                     <button class="btn-save" id="saveBtn">💾 保存</button>
                 </div>
             </div>
-            <div class="output-meta">
-                <span class="model-used" id="outputModel"></span>
-            </div>
             <div id="outputContent"></div>
         </div>
     </div>
+</div>
 </div>
 
 <div class="ripple-container" id="rippleContainer"></div>
@@ -231,6 +518,19 @@ window.scrollTo(0, 0);
             ripple.addEventListener('animationend', function() { ripple.remove(); });
         });
     }
+})();
+</script>
+<script>
+// 页面过渡淡入（从 dream 跳转来时）
+(function() {
+    var pt = document.getElementById('pageTransition');
+    pt.classList.add('incoming');
+    requestAnimationFrame(function() {
+        pt.classList.add('done');
+    });
+    pt.addEventListener('transitionend', function() {
+        pt.classList.remove('incoming', 'done');
+    });
 })();
 </script>
 <script src="/static/app-frontend.js"></script>

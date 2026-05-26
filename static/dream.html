@@ -93,67 +93,14 @@
             transition: none;
         }
         @keyframes star-breathe {
-            0%, 100% { opacity: 0.6; transform: scale(0.95); }
-            50% { opacity: 1; transform: scale(1.12); }
+            0%, 100% { opacity: 0.4; transform: scale(0.9); }
+            20% { opacity: 1; transform: scale(1.15); }
+            35% { opacity: 0.5; transform: scale(0.95); }
+            50% { opacity: 0.85; transform: scale(1.06); }
+            65% { opacity: 0.35; transform: scale(0.88); }
+            85% { opacity: 0.75; transform: scale(1.03); }
         }
 
-        /* 云朵 */
-        .dream-cloud {
-            position: fixed;
-            z-index: 3;
-            pointer-events: none;
-            opacity: 0;
-        }
-        .dream-cloud.show {
-            opacity: 0.8;
-        }
-        .dream-cloud-1 {
-            z-index: 3;
-            left: -20%;
-            top: -5%;
-            width: 40vw;
-            max-width: 500px;
-            height: auto;
-            transition: opacity 2s ease, left 2.5s ease;
-        }
-        .dream-cloud-1.show {
-            left: 4%;
-        }
-        .dream-cloud-1.merge {
-            left: 120%;
-            top: 100%;
-            opacity: 0;
-            transform: perspective(500px) rotateX(15deg) translateZ(-300px) scale(0.3);
-            transition: left 7s ease, top 7s ease, opacity 7s ease, transform 7s ease;
-            z-index: 2;
-        }
-        .dream-cloud-1.merged {
-            visibility: hidden;
-        }
-        .dream-cloud-2 {
-            z-index: 4;
-            right: -100%;
-            bottom: -10%;
-            width: 50vw;
-            max-width: none;
-            height: auto;
-            transition: opacity 2s ease, right 2.5s ease;
-        }
-        .dream-cloud-2.show {
-            right: 0;
-        }
-        .dream-cloud-2.tilt {
-            transform: perspective(800px) rotateY(-25deg) rotateX(15deg) translateX(15%) scale(0.85);
-            transition: transform 3s ease;
-        }
-        @media (max-width: 768px) {
-            .dream-card { padding: 32px 24px; border-radius: 16px; }
-            .dream-card h1 { font-size: 24px; letter-spacing: 4px; }
-            .dream-arm { width: 60vw; }
-            .dream-star { width: 12vw; top: 15%; right: 10%; }
-            .dream-cloud-1 { width: 50vw; }
-            .dream-cloud-2 { width: 100vw; }
-        }
     </style>
     <style>
         .dream-text {
@@ -236,6 +183,20 @@
         @keyframes ripple-2 { to { transform: translate(-50%,-50%) scale(4); opacity: 0; } }
         @keyframes ripple-3 { to { transform: translate(-50%,-50%) scale(3); opacity: 0; } }
         @keyframes ripple-4 { to { transform: translate(-50%,-50%) scale(2); opacity: 0; } }
+
+        /* 页面跳转过渡遮罩 */
+        .page-transition {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: #0a0e1a;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+        }
+        .page-transition.active {
+            opacity: 1;
+        }
     </style>
 <body>
 
@@ -270,10 +231,8 @@
     <div class="dream-text-sub">Click the star</div>
 </div>
 
-<img src="/pictures/云3.png" class="dream-cloud dream-cloud-1" id="cloud1" alt="">
-<img src="/pictures/云1.png" class="dream-cloud dream-cloud-2" id="cloud2" alt="">
-
 <div class="ripple-container" id="rippleContainer"></div>
+<div class="page-transition" id="pageTransition"></div>
 
 <script>
 (function initFallingStars() {
@@ -329,17 +288,15 @@
     }
 })();
 
-// 点击星星 — 梦幻烟雾消散
+// 点击星星 — 梦幻烟雾消散后跳转到故事织机
 document.addEventListener('click', function(e) {
     if (!e.target.classList.contains('dream-star')) return;
     vanishScene();
 });
 function vanishScene() {
-    // 标记已触发
     if (document.body.classList.contains('vanished')) return;
     document.body.classList.add('vanished');
 
-    // 消散元素
     var arm = document.querySelector('.dream-arm');
     var star = document.querySelector('.dream-star');
     var text = document.querySelector('.dream-text');
@@ -348,7 +305,7 @@ function vanishScene() {
     star.classList.add('vanish');
     text.classList.add('vanish');
 
-    // 生成烟雾粒子 — 从星星位置向右上方（东北）飘散
+    // 从星星位置向右上方（东北）飘散
     var starRect = star.getBoundingClientRect();
     var cx = starRect.left + starRect.width / 2;
     var cy = starRect.top + starRect.height / 2;
@@ -391,7 +348,7 @@ function vanishScene() {
         p2.addEventListener('animationend', function() { this.remove(); });
     }
 
-    // 从文字位置飘散 — 60 个，一半向右上（东北），一半向左下（西南）
+    // 从文字位置飘散
     var textRect = text.getBoundingClientRect();
     var tx = textRect.left + textRect.width / 2;
     var ty = textRect.top + textRect.height / 2;
@@ -405,11 +362,9 @@ function vanishScene() {
         p3.style.left = (tx + (Math.random() - 0.5) * textRect.width) + 'px';
         p3.style.top = (ty + (Math.random() - 0.5) * textRect.height) + 'px';
         if (k < 30) {
-            // 向右上（东北）
             p3.style.setProperty('--sx', (80 + Math.random() * 250) + 'px');
             p3.style.setProperty('--sy', -(80 + Math.random() * 250) + 'px');
         } else {
-            // 向左下（西南）
             p3.style.setProperty('--sx', -(80 + Math.random() * 250) + 'px');
             p3.style.setProperty('--sy', (50 + Math.random() * 200) + 'px');
         }
@@ -420,34 +375,13 @@ function vanishScene() {
         p3.addEventListener('animationend', function() { this.remove(); });
     }
 
-    // 粒子淡出时 — 云朵平滑出现
+    // 烟雾消散后，黑色遮罩淡入，再跳转到故事织机
     setTimeout(function() {
-        document.getElementById('cloud1').classList.add('show');
-        document.getElementById('cloud2').classList.add('show');
-        // 云朵出现后，绑定点击/滚轮触发合并动画
-        setupCloudMerge();
-    }, 1200);
-}
-
-// 云朵合并 + 向后倾倒
-var mergeTriggered = false;
-function setupCloudMerge() {
-    if (mergeTriggered) return;
-    function doMerge() {
-        if (mergeTriggered) return;
-        mergeTriggered = true;
-        var c1 = document.getElementById('cloud1');
-        var c2 = document.getElementById('cloud2');
-        c1.classList.add('merge');
-        c2.classList.add('tilt');
+        document.getElementById('pageTransition').classList.add('active');
         setTimeout(function() {
-            c1.classList.add('merged');
-        }, 7000);
-        document.removeEventListener('click', doMerge);
-        document.removeEventListener('wheel', doMerge);
-    }
-    document.addEventListener('click', doMerge);
-    document.addEventListener('wheel', doMerge);
+            window.location.href = '/static/index.html';
+        }, 600);
+    }, 1800);
 }
 </script>
 

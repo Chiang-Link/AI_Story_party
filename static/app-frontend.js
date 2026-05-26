@@ -10,7 +10,7 @@ const continueBtn = document.getElementById('continueBtn');
 const loading = document.getElementById('loading');
 const output = document.getElementById('output');
 const outputKeywords = document.getElementById('outputKeywords');
-const outputModel = document.getElementById('outputModel');
+const outputModel = { textContent: '' };
 const outputContent = document.getElementById('outputContent');
 const kwError = document.getElementById('kwError');
 const historyList = document.getElementById('historyList');
@@ -282,7 +282,7 @@ async function renderHistory() {
             currentHistoryId = item.id;
             outputKeywords.textContent = '关键词：' + item.words.join(' · ');
             outputModel.textContent = '由 ' + getModelName(item.model || 'glm') + ' 生成';
-            outputContent.textContent = item.story;
+            outputContent.textContent = item.story.trimStart();
             output.classList.add('active');
             currentDisplayedStory = { words: item.words, story: item.story };
             saveBtn.disabled = false;
@@ -336,7 +336,7 @@ try {
     if (saved && saved.words && saved.story) {
         outputKeywords.textContent = '关键词：' + saved.words.join(' · ');
         outputModel.textContent = '由 ' + getModelName(saved.model || 'glm') + ' 生成';
-        outputContent.textContent = saved.story;
+        outputContent.textContent = saved.story.trimStart();
         output.classList.add('active');
         currentDisplayedStory = { words: saved.words, story: saved.story };
         saveBtn.disabled = false;
@@ -446,7 +446,7 @@ async function generateStory() {
         }
 
         const story = await readSSEStream(resp, (text) => {
-            outputContent.textContent = text;
+            outputContent.textContent = text.trimStart();
         });
 
         const finalStory = story || '（AI 返回内容为空）';
@@ -626,7 +626,7 @@ async function reviseStory() {
         }
 
         const story = await readSSEStream(resp, (text) => {
-            outputContent.textContent = text;
+            outputContent.textContent = text.trimStart();
         });
 
         const finalStory = story || '（AI 返回内容为空）';

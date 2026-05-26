@@ -25,6 +25,11 @@ pictures_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "picture
 if os.path.isdir(pictures_dir):
     app.mount("/pictures", StaticFiles(directory=pictures_dir), name="pictures")
 
+# 挂载 video 目录
+video_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "video")
+if os.path.isdir(video_dir):
+    app.mount("/video", StaticFiles(directory=video_dir), name="video")
+
 
 # ── 健康检查 ──
 @app.get("/api/health")
