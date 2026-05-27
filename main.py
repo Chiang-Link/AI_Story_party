@@ -30,6 +30,11 @@ video_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "video")
 if os.path.isdir(video_dir):
     app.mount("/video", StaticFiles(directory=video_dir), name="video")
 
+# 挂载 This-July 目录（字体文件）
+thisjuly_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "This-July")
+if os.path.isdir(thisjuly_dir):
+    app.mount("/This-July", StaticFiles(directory=thisjuly_dir), name="thisjuly")
+
 
 # ── 健康检查 ──
 @app.get("/api/health")

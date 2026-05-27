@@ -6,6 +6,10 @@
     <title>梦境 - 故事织机</title>
     <link rel="stylesheet" href="/static/style.css">
     <style>
+        @font-face {
+            font-family: 'SignaturaMonoline';
+            src: url('/This-July/Signatura-Monoline-3.ttf') format('truetype');
+        }
         .dream-page {
             display: flex;
             flex-direction: column;
@@ -109,7 +113,7 @@
             pointer-events: none;
             text-align: center;
             left: 50%;
-            top: 55%;
+            top: 50%;
             transform: translate(-50%, -50%);
             transition: none;
         }
@@ -117,30 +121,32 @@
             opacity: 0;
         }
         .dream-text-main {
+            font-family: 'SignaturaMonoline', cursive;
+            font-style: italic;
             color: rgba(200, 180, 60, 0.7);
-            font-size: 24px;
-            font-weight: 300;
-            letter-spacing: 5px;
-            font-style: normal;
-            text-shadow: 0 0 40px rgba(200, 180, 60, 0.08);
+            font-size: 39px;
+            font-weight: normal;
+            letter-spacing: 2px;
+            text-shadow: 0 0 60px rgba(200, 180, 60, 0.12);
             text-align: center;
-            line-height: 1.9;
-            max-width: 700px;
+            line-height: 1.6;
+            max-width: 800px;
             padding: 0 20px;
         }
         .dream-text-main .line1 {
             display: block;
+            font-family: 'SignaturaMonoline', cursive !important; font-style: italic !important;
         }
         .dream-text-main .line1 em {
             font-style: italic;
             color: rgba(200, 180, 60, 0.6);
+            font-family: 'SignaturaMonoline', cursive !important; font-style: italic !important;
         }
         .dream-text-main .line2 {
             display: block;
             margin-top: 8px;
-            font-size: 21px;
-            letter-spacing: 6px;
             color: rgba(200, 180, 60, 0.55);
+            font-family: 'SignaturaMonoline', cursive !important; font-style: italic !important;
         }
         .dream-text-sub {
             color: rgba(200, 180, 60, 0.25);
@@ -229,6 +235,8 @@
         <span class="line2">Good night.</span>
     </div>
     <div class="dream-text-sub">Click the star</div>
+    <div class="dream-text-sub" style="text-align:right; margin-right:-15px; font-family:'SweetSensations',cursive; font-style:italic;">点击星星</div>
+
 </div>
 
 <div class="ripple-container" id="rippleContainer"></div>
@@ -384,6 +392,5 @@ function vanishScene() {
     }, 1800);
 }
 </script>
-
 </body>
 </html>

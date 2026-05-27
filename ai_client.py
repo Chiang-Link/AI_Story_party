@@ -1,16 +1,9 @@
-import os
 import json
+import os
 from typing import AsyncGenerator, List
 
 import httpx
-
-GLM_API_KEY = os.getenv("GLM_API_KEY", "")
-DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
-
-GLM_URL = "https://open.bigmodel.cn/api/paas/v4/chat/completions"
-GLM_MODEL = "glm-4-flash-250414"
-DEEPSEEK_URL = "https://api.deepseek.com/chat/completions"
-DEEPSEEK_MODEL = "deepseek-v4-flash"
+from config import DEEPSEEK_API_KEY, DEEPSEEK_MODEL, DEEPSEEK_URL, GLM_API_KEY, GLM_MODEL, GLM_URL
 
 
 def build_generate_prompt(keywords: List[str], style: str, length: str, user_edit: str = "") -> str:

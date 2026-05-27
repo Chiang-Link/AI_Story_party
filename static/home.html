@@ -49,73 +49,77 @@
             z-index: 1;
         }
 
-        .btn-enter {
+        /* ── 边缘光晕按钮（仅外边缘发光，内部无光） ── */
+        .glow-btn {
+            --prox: 0;
+            --angle: 0deg;
+            position: relative;
+            display: inline-flex;
+            border-radius: 60px;
+            cursor: pointer;
+            text-decoration: none;
+            font-family: inherit;
+            background: linear-gradient(135deg, rgba(200, 180, 60, 0.12), rgba(200, 180, 60, 0.04));
+            border: 1px solid rgba(200, 180, 60, 0.3);
+            transition: transform 0.4s, border-color 0.4s;
+            overflow: hidden;
+        }
+        .glow-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            border-color: rgba(200, 180, 60, 0.5);
+        }
+        .glow-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+        /* 光晕层 — 旋转渐变，鼠标悬停时顺时针转圈 */
+        .glow-btn::before {
+            content: "";
+            position: absolute;
+            inset: -24px;
+            border-radius: 84px;
+            background: conic-gradient(transparent 10%, rgba(200, 180, 60, 0.25) 20%, rgba(255, 220, 150, 0.35) 28%, rgba(200, 180, 60, 0.25) 36%, transparent 46%,
+                transparent 82%, rgba(200, 180, 60, 0.12) 90%, transparent);
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(10px);
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+        .glow-btn:hover::before {
+            opacity: 1;
+            animation: glow-rotate 5s linear infinite;
+        }
+        /* 初始扫光（页面加载后触发一次） */
+        .glow-btn.sweep-active::before {
+            opacity: 1;
+            animation: glow-rotate 3.3s linear forwards;
+        }
+        .glow-btn.sweep-fade::before {
+            opacity: 0;
+            animation: none;
+            transition: opacity 0.8s ease;
+        }
+        @keyframes glow-rotate {
+            to { transform: rotate(360deg); }
+        }
+        .glow-btn-inner {
             display: inline-flex;
             align-items: center;
             gap: 14px;
             padding: 20px 56px;
-            border: 1px solid rgba(200, 180, 60, 0.3);
-            border-radius: 60px;
-            background: linear-gradient(135deg, rgba(200, 180, 60, 0.12), rgba(200, 180, 60, 0.04));
+            position: relative;
+            z-index: 1;
             color: #e8d48b;
             font-size: 20px;
             font-weight: 600;
             letter-spacing: 4px;
-            cursor: pointer;
-            transition: all 0.4s;
-            font-family: inherit;
             text-decoration: none;
-            position: relative;
-            overflow: hidden;
         }
-
-        .btn-enter::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            border-radius: 62px;
-            background: conic-gradient(from 0deg, transparent, rgba(200, 180, 60, 0.3), transparent, rgba(200, 180, 60, 0.3), transparent);
-            z-index: -1;
-            animation: borderRotate 4s linear infinite;
-            opacity: 0;
-            transition: opacity 0.6s;
-        }
-
-        .btn-enter:hover::before {
-            opacity: 1;
-        }
-
-        .btn-enter::after {
-            content: '';
-            position: absolute;
-            inset: 2px;
-            border-radius: 58px;
-            background: #0a1628;
-            z-index: -1;
-        }
-
-        @keyframes borderRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .btn-enter:hover {
-            background: linear-gradient(135deg, rgba(200, 180, 60, 0.2), rgba(200, 180, 60, 0.08));
-            box-shadow: 0 12px 40px rgba(200, 180, 60, 0.12);
-            transform: translateY(-2px) scale(1.02);
-            border-color: rgba(200, 180, 60, 0.5);
-        }
-
-        .btn-enter:active {
-            transform: translateY(0) scale(0.98);
-        }
-
-        .btn-enter .arrow {
+        .glow-btn-inner .arrow {
             font-size: 24px;
             transition: transform 0.3s;
         }
-
-        .btn-enter:hover .arrow {
+        .glow-btn:hover .glow-btn-inner .arrow {
             transform: translateX(4px);
         }
 
@@ -343,9 +347,11 @@
     </div>
 
     <div class="home-btn-area">
-        <a href="/static/dream.html" class="btn-enter">
-            <span>进入梦境</span>
-            <span class="arrow">→</span>
+        <a href="/static/dream.html" class="glow-btn" id="dreamBtn">
+            <span class="glow-btn-inner">
+                <span>进入梦境</span>
+                <span class="arrow">→</span>
+            </span>
         </a>
         <div class="home-bottom">
         <p>✦ 由 AI 驱动 · 每一次都是全新的故事 ✦</p>
@@ -441,7 +447,19 @@
         });
     }
 })();
-</script>
 
+// ── 边缘光晕 — 页面加载后播一次扫光动画 ──
+(function initGlow() {
+    var btn = document.getElementById('dreamBtn');
+    if (!btn) return;
+    btn.classList.add('sweep-active');
+    btn.addEventListener('animationend', function fn() {
+        btn.classList.remove('sweep-active');
+        btn.classList.add('sweep-fade');
+        setTimeout(function() { btn.classList.remove('sweep-fade'); }, 800);
+        btn.removeEventListener('animationend', fn);
+    });
+})();
+</script>
 </body>
 </html>
