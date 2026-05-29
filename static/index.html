@@ -85,6 +85,7 @@
             padding: 24px 16px;
             max-height: calc(100vh - 96px);
             overflow-y: auto;
+            scrollbar-gutter: stable;
         }
         .card-history::-webkit-scrollbar { width: 4px; }
         .card-history::-webkit-scrollbar-track { background: transparent; }
@@ -272,7 +273,9 @@
             position: relative;
             padding: 40px;
             max-height: calc(100vh - 96px);
+            min-height: calc(100vh - 96px);
             overflow-y: auto;
+            scrollbar-gutter: stable;
         }
         .card-loom::-webkit-scrollbar { width: 4px; }
         .card-loom::-webkit-scrollbar-track { background: transparent; }

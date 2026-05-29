@@ -241,8 +241,7 @@ async function renderHistory() {
     }
     historyEmpty.style.display = 'none';
 
-    for (let i = history.length - 1; i >= 0; i--) {
-        const item = history[i];
+    for (const item of history) {
         const div = document.createElement('div');
         div.className = 'history-item' + (item.id === currentHistoryId ? ' active' : '');
 
@@ -416,6 +415,22 @@ async function generateStory() {
     }
 
     if (hasError) return;
+
+    // 自动保存上一个未保存的故事
+    if (currentDisplayedStory && !saveBtn.disabled) {
+        try {
+            await fetch(`${API_BASE}/api/history`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: currentHistoryId || Date.now().toString(),
+                    words: currentDisplayedStory.words,
+                    story: currentDisplayedStory.story,
+                    timestamp: Date.now()
+                })
+            });
+        } catch (_) { /* 静默忽略保存失败 */ }
+    }
 
     generateBtn.disabled = true;
     loading.classList.add('active');

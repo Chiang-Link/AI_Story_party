@@ -29,7 +29,7 @@ def get_all() -> List[StoryItem]:
 
 def add(item: StoryItem) -> None:
     data = _read()
-    data.append(item.model_dump())
+    data.insert(0, item.model_dump())
     _write(data)
 
 
